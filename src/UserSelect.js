@@ -77,7 +77,7 @@ const UserSelect = () => {
                         <Avatar alt={user.name} src={user.profileImgPath} />
                     </Grid>
                     <Grid item>
-                        <Typography variant='h6'>{user.name}</Typography>
+                        <Typography>{user.name}</Typography>
                     </Grid>
                 </Grid>
             ))}
