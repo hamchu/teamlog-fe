@@ -1,8 +1,12 @@
+import TaskContainer from "./TaskContainer"
 import UserSelect from "./UserSelect"
 
 const App = () => {
   return (
-    <UserSelect />
+    <>
+      <TaskContainer />
+      <UserSelect />
+    </>
   );
 };
 

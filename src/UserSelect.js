@@ -39,7 +39,7 @@ const fetchAndJsonUsers = async () => {
         users: usersMock,
         totalCount: usersMock.length,
     };
-}
+};
 
 const UserSelect = () => {
     const [error, setError] = useState(null);
@@ -72,7 +72,7 @@ const UserSelect = () => {
     return (
         <>
             {users.map((user) => (
-                <Grid container spacing={1} alignItems='center'>
+                <Grid container spacing={1} alignItems='center' key={user.id}>
                     <Grid item>
                         <Avatar alt={user.name} src={user.profileImgPath} />
                     </Grid>
