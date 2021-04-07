@@ -1,5 +1,5 @@
-import { Button, Chip, Divider, Grid, List, ListItem, ListItemText, Typography } from "@material-ui/core"
-import { Error } from "@material-ui/icons"
+import { Button, Chip, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Typography } from "@material-ui/core"
+import { Error, HourglassFull } from "@material-ui/icons"
 
 const TaskContainer = () => {
     return (
@@ -14,7 +14,7 @@ const TaskContainer = () => {
                 </Grid>
 
                 <Grid item container spacing={2}>
-                    <Grid item sm={12} md={3}>
+                    <Grid item xs={12} md={3}>
                         <Grid container spacing={1} alignItems='center'>
                             <Grid item>
                                 <Chip label='시작 전' color='primary' />
@@ -32,7 +32,7 @@ const TaskContainer = () => {
                         </List>
                     </Grid>
 
-                    <Grid item sm={12} md={3}>
+                    <Grid item xs={12} md={3}>
                         <Grid container spacing={1} alignItems='center'>
                             <Grid item>
                                 <Chip label='진행 중' color='primary' />
@@ -45,6 +45,9 @@ const TaskContainer = () => {
                         <List>
                             <ListItem button>
                                 <ListItemText primary='태스크 관리 UI 그리기' />
+                                <ListItemIcon>
+                                    <HourglassFull color='primary' />
+                                </ListItemIcon>
                             </ListItem>
                             <Divider />
                             <ListItem button>
@@ -54,7 +57,7 @@ const TaskContainer = () => {
                         </List>
                     </Grid>
 
-                    <Grid item sm={12} md={3}>
+                    <Grid item xs={12} md={3}>
                         <Grid container spacing={1} alignItems='center'>
                             <Grid item>
                                 <Chip label='완료' color='primary' />
@@ -80,7 +83,7 @@ const TaskContainer = () => {
                         </List>
                     </Grid>
 
-                    <Grid item sm={12} md={3}>
+                    <Grid item xs={12} md={3}>
                         <Grid container spacing={1} alignItems='center'>
                             <Grid item>
                                 <Chip icon={<Error />} label='미완료' color='secondary' />
