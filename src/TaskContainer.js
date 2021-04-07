@@ -1,4 +1,4 @@
-import { Avatar, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip, Typography } from "@material-ui/core"
+import { Avatar, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip, Typography } from "@material-ui/core"
 import { Delete, Edit, Error, HourglassFull } from "@material-ui/icons"
 import { AvatarGroup } from "@material-ui/lab";
 import { useState } from "react";
@@ -113,9 +113,9 @@ const TaskContainer = () => {
                             <Chip label='시작 전' color='primary' size='small' />
                         </Grid>
                         <Grid item>
-                            <DialogContentText variant='h6'>
+                            <Typography variant='h6'>
                                 설계 발표 자료 만들기
-                            </DialogContentText>
+                            </Typography>
                         </Grid>
                     </Grid>
                 </DialogTitle>
