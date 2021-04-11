@@ -153,7 +153,7 @@ const UserSelect = () => {
                 display='flex'
                 flexWrap='wrap'
                 justifyContent='center'
-                alignContent='center'
+                alignItems='center'
                 gridGap='4px'
 
                 height='128px'
