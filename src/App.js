@@ -1,5 +1,5 @@
 import { Box, Grid } from "@material-ui/core";
-import MapContainer from "./MapContainer";
+import MapContainer from "./map/MapContainer";
 import TaskContainer from "./TaskContainer";
 import UserSelect from "./UserSelect";
 
