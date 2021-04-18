@@ -9,10 +9,11 @@ import { useEffect, useRef, useState } from "react";
  * 포스트 디스플레이어 -> 선택된 포스트를 보인다.
  */
 
-const Map = ({ posts, selectedPost, handleSelectPost }) => {
+const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
   const ref = useRef(null);
 
   const [map, setMap] = useState(null);
+  const [markers, setMarkers] = useState(null);
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   useEffect(() => {
@@ -52,8 +53,10 @@ const Map = ({ posts, selectedPost, handleSelectPost }) => {
 
       marker.addListener('click', handleSelectPost(index));
 
-      markers.push(markder);
+      markers.push(marker);
     });
+
+    setMarkers(markers);
   }, [map]);
 
   useEffect(() => {
@@ -61,7 +64,11 @@ const Map = ({ posts, selectedPost, handleSelectPost }) => {
       return;
     }
 
-    // map의 marker를 전부 없앤다.
+    markers.forEach((marker) => {
+      marker.setMap(null);
+    })
+
+    const markers = [];
 
     posts.forEach((post, index) => {
       const marker = new google.maps.Marker({
@@ -73,6 +80,8 @@ const Map = ({ posts, selectedPost, handleSelectPost }) => {
 
       marker.addListener('click', handleSelectPost(index));
     });
+
+    setMarkers(markers);
   }, [posts]);
 
   useEffect(() => {
@@ -84,13 +93,14 @@ const Map = ({ posts, selectedPost, handleSelectPost }) => {
       selectedMarker.setAnimation(null);
     }
 
-    if (selectedPost !== null) {
-      const targetMarker = markers[selectedPost];
+    if (selectedPostIndex != null) {
+      const targetMarker = markers[selectedPostIndex];
 
       map.panTo(targetMarker.position);
       targetMarker.setAnimation(google.maps.Animation.BOUNCE);
+      setSelectedMarker(targetMarker);
     }
-  }, [selectedPost]);
+  }, [selectedPostIndex]);
 
   return (
     <div style={{ height: "100%" }} ref={ref} />
