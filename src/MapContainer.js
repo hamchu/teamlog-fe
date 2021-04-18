@@ -25,14 +25,17 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
     });
 
     loader.load().then(() => {
-      const map = new google.maps.Map(ref.current, {
-        zoom: 4,
-        center: { lat: -25.344, lng: 131.036 },
+      const newMap = new google.maps.Map(ref.current, {
+        zoom: 2,
+        center: {
+          lat: 30.0,
+          lng: 20.0,
+        },
         disableDefaultUI: true,
         // zoomControl: true,
-      })
+      });
 
-      setMap(map);
+      setMap(newMap);
     });
   }, []);
 
@@ -41,7 +44,7 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
       return;
     }
 
-    const markers = [];
+    const newMarkers = [];
 
     posts.forEach((post, index) => {
       const marker = new google.maps.Marker({
@@ -51,12 +54,16 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
         animation: google.maps.Animation.DROP,
       });
 
-      marker.addListener('click', handleSelectPost(index));
+      marker.addListener("click", () => {
+        handleSelectPost(index);
+      });
 
-      markers.push(marker);
+      newMarkers.push(marker);
     });
 
-    setMarkers(markers);
+    console.log("초기화");
+    console.log(newMarkers);
+    setMarkers(newMarkers);
   }, [map]);
 
   useEffect(() => {
@@ -66,9 +73,9 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
 
     markers.forEach((marker) => {
       marker.setMap(null);
-    })
+    });
 
-    const markers = [];
+    const newMarkers = [];
 
     posts.forEach((post, index) => {
       const marker = new google.maps.Marker({
@@ -78,10 +85,16 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
         animation: google.maps.Animation.DROP,
       });
 
-      marker.addListener('click', handleSelectPost(index));
+      marker.addListener("click", () => {
+        handleSelectPost(index);
+      });
+
+      newMarkers.push(marker);
     });
 
-    setMarkers(markers);
+    console.log("최신화");
+    console.log(newMarkers);
+    setMarkers(newMarkers);
   }, [posts]);
 
   useEffect(() => {
@@ -89,78 +102,63 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
       return;
     }
 
-    if (selectedMarker) {
+    console.log(selectedPostIndex);
+
+    if (selectedMarker !== null && selectedMarker.getAnimation() !== null) {
       selectedMarker.setAnimation(null);
     }
 
-    if (selectedPostIndex != null) {
+    if (selectedPostIndex !== null) {
       const targetMarker = markers[selectedPostIndex];
 
+      // map.setZoom(4);
       map.panTo(targetMarker.position);
       targetMarker.setAnimation(google.maps.Animation.BOUNCE);
       setSelectedMarker(targetMarker);
     }
   }, [selectedPostIndex]);
 
-  return (
-    <div style={{ height: "100%" }} ref={ref} />
-  );
-}
+  return <div style={{ height: "100%" }} ref={ref} />;
+};
+
+const posts = [
+  {
+    position: {
+      lat: 30.0,
+      lng: 20.0,
+    },
+  },
+  {
+    position: {
+      lat: 50.0,
+      lng: 20.0,
+    },
+  },
+  {
+    position: {
+      lat: 70.0,
+      lng: 40.0,
+    },
+  },
+  {
+    position: {
+      lat: 10.0,
+      lng: 90.0,
+    },
+  },
+];
 
 const MapContainer = () => {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    // 한 번만.
-    const loader = new Loader({
-      apiKey: "AIzaSyD19HDfecIVKOhxEa0a81aC9AV5_2LrgDY",
-      version: "weekly",
-      language: "ko",
-      region: "KR",
-    });
-
-    // 한 번만.
-    loader.load().then(() => {
-      const uluru = { lat: -25.344, lng: 131.036 };
-
-      const map = new google.maps.Map(ref.current, {
-        zoom: 4,
-        center: uluru,
-        disableDefaultUI: true,
-        // zoomControl: true,
-      });
-
-      // setMap(map); -> 렌더링을 트리거
-      // props변경
-      // 렌더링
-      // useEffect(f, [map]) -> props에 따른 최초 작업을 실시
-      // useEffect(f, [props.posts]) -> 마커 재생성
-      // useEffect(f, [props.selectedPost]) -> 마커를 찾고 map.panTo + setAnimation
-
-      const marker = new google.maps.Marker({
-        map: map,
-        optimized: false,
-        position: uluru,
-        animation: google.maps.Animation.DROP,
-      });
-      marker.addListener("click", toggleBounce);
-
-      function toggleBounce() {
-        if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-        } else {
-          // map.setZoom(4);
-          map.panTo(marker.position);
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-      }
-    });
-  }, []);
+  const [selectedPostIndex, setSelectedPostIndex] = useState(null);
 
   return (
-    <>
-      <div style={{ height: "100%" }} ref={ref} />
-    </>
+    <Map
+      posts={posts}
+      selectedPostIndex={selectedPostIndex}
+      handleSelectPost={(index) => {
+        setSelectedPostIndex(index);
+      }}
+    />
   );
 };
 
