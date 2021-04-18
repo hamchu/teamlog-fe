@@ -1,7 +1,8 @@
-import { Avatar, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip, Typography } from "@material-ui/core"
+import { Avatar, Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip, Typography } from "@material-ui/core"
 import { Delete, Edit, Error, HourglassFull } from "@material-ui/icons"
 import { AvatarGroup } from "@material-ui/lab";
 import { useState } from "react";
+import UserSelect from "./UserSelect"
 
 const TaskContainer = () => {
     const [open, setOpen] = useState(false);
@@ -107,58 +108,9 @@ const TaskContainer = () => {
                 </Grid>
             </Grid>
             <Dialog open={open} onClose={() => {setOpen(false); }}>
-                <DialogTitle>
-                    <Grid container direction='column' alignItems='center'>
-                        <Grid item>
-                            <Chip label='시작 전' color='primary' size='small' />
-                        </Grid>
-                        <Grid item>
-                            <Typography variant='h6'>
-                                설계 발표 자료 만들기
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </DialogTitle>
-                <Divider />
-                <DialogContent>
-                    <Grid container spacing={2} alignItems='center'>
-                        <Grid item>
-                            <Typography>수행자</Typography>
-                        </Grid>
-
-                        <Grid item>
-                            <Tooltip title='윤진, 신현정, 이희수, 신동헌'>
-                                <AvatarGroup max={3}>
-                                    <Avatar alt='윤진' src='http://codersit.co.kr/static/img/AAA.png' />
-                                    <Avatar alt='신현정' src='http://codersit.co.kr/static/img/CCC.png' />
-                                    <Avatar alt='이희수' src='http://codersit.co.kr/static/img/DDD.png' />
-                                    <Avatar alt='신동헌' src='http://codersit.co.kr/static/img/BBB.png' />
-                                </AvatarGroup>
-                            </Tooltip>
-                        </Grid>
-                    </Grid>
-                    <Divider />
-                </DialogContent>
-                <DialogContent>
-                    <Grid container spacing={2} alignItems='center'>
-                        <Grid item>
-                            <Typography>마감일</Typography>
-                        </Grid>
-
-                        <Grid item>
-                            <Typography>2021년 5월 7일</Typography>
-                        </Grid>
-                    </Grid>
-                    <Divider />
-                </DialogContent>
-                <DialogActions>
-                    <IconButton>
-                        <Edit />
-                    </IconButton>
-                    <IconButton>
-                        <Delete />
-                    </IconButton>
-                </DialogActions>
+      <Box width='360px' border='solid 1px'>
+          <UserSelect />
+      </Box>
             </Dialog>
         </>
     );

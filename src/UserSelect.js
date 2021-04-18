@@ -7,7 +7,7 @@ const usersMock = [
         id: 'ondal1997',
         name: '신동헌',
         introduction: '',
-        profileImgPath: 'http://codersit.co.kr/static/img/AAA.png',
+        profileImgURL: 'http://codersit.co.kr/static/img/AAA.png',
     },
     {
         id: 'hamchu',
