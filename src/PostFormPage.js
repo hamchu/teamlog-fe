@@ -57,7 +57,9 @@ const App = () => {
                         <TextField value={location} fullWidth/>
                       </Grid>
                     </Grid>
-                    <AccessModifier isLockOpen={isLockOpen} updateLockOpen={setIsLockOpen} />
+                    <Grid item container xs={12}>
+                      <AccessModifier isLockOpen={isLockOpen} updateLockOpen={setIsLockOpen} />
+                    </Grid>
                   </Grid>
                   <Grid container item spacing={1}>
                     <AttachmentUploader files={attachedFiles} updateFiles={setAttachedFiles}/>

@@ -50,7 +50,7 @@ const ThumbnailList = ({ files, updateFiles }) => {
     const current = document.querySelectorAll('.media')[index];
 
     if (!destination) { // dropped outside the list 
-      current.style.border = '2px solid #D53030';
+      current.style.border = '3px solid #FE2614';
     } else current.style.border = 'none';
   };
 

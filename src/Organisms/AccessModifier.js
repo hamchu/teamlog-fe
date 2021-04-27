@@ -6,7 +6,7 @@ import {
 import { Lock, LockOpen } from '@material-ui/icons';
 
 const AccessModifier = ({ isLockOpen, updateLockOpen }) => (
-  <Grid container item justify="flex-end">
+  <Grid container>
     {!isLockOpen ? (
       <Grid
         item
