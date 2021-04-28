@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 
-import { Loader } from "@googlemaps/js-api-loader";
-import { useEffect, useRef, useState } from "react";
+import { Loader } from '@googlemaps/js-api-loader';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * 맵 컨테이너 -> 맵에게 포스트들을 준다. 맵에게 특정 포스트를 선택하라고 강요한다. 포스트 선택을 핸들링한다.
@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
  * 포스트 디스플레이어 -> 선택된 포스트를 보인다.
  */
 
-const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
+const Map = ({ posts, selectedPostIndex, handlePostSelect }) => {
   const ref = useRef(null);
 
   const [map, setMap] = useState(null);
@@ -18,10 +18,10 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "AIzaSyD19HDfecIVKOhxEa0a81aC9AV5_2LrgDY",
-      version: "weekly",
-      language: "ko",
-      region: "KR",
+      apiKey: 'AIzaSyD19HDfecIVKOhxEa0a81aC9AV5_2LrgDY',
+      version: 'weekly',
+      language: 'ko',
+      region: 'KR',
     });
 
     loader.load().then(() => {
@@ -50,18 +50,18 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
       const marker = new google.maps.Marker({
         map: map,
         optimized: false,
-        position: post.position,
+        position: post.location,
         animation: google.maps.Animation.DROP,
       });
 
-      marker.addListener("click", () => {
-        handleSelectPost(index);
+      marker.addListener('click', () => {
+        handlePostSelect(index);
       });
 
       newMarkers.push(marker);
     });
 
-    console.log("초기화");
+    console.log('초기화');
     console.log(newMarkers);
     setMarkers(newMarkers);
   }, [map]);
@@ -85,14 +85,14 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
         animation: google.maps.Animation.DROP,
       });
 
-      marker.addListener("click", () => {
+      marker.addListener('click', () => {
         handleSelectPost(index);
       });
 
       newMarkers.push(marker);
     });
 
-    console.log("최신화");
+    console.log('최신화');
     console.log(newMarkers);
     setMarkers(newMarkers);
   }, [posts]);
@@ -118,7 +118,7 @@ const Map = ({ posts, selectedPostIndex, handleSelectPost }) => {
     }
   }, [selectedPostIndex]);
 
-  return <div style={{ height: "100%" }} ref={ref} />;
+  return <div style={{ height: '100%' }} ref={ref} />;
 };
 
 export default Map;
