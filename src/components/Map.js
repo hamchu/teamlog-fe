@@ -1,124 +1,94 @@
 /* eslint-disable no-undef */
 
-import { Loader } from '@googlemaps/js-api-loader';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import ApiLoadContext from '../contexts/apiLoad';
 
-/**
- * 맵 컨테이너 -> 맵에게 포스트들을 준다. 맵에게 특정 포스트를 선택하라고 강요한다. 포스트 선택을 핸들링한다.
- * 맵(posts, selectedPost, handleSelectPost(s)) -> 포스트들을 받는다. 특정 포스트가 선택되면 보고한다.
- * 포스트 디스플레이어 -> 선택된 포스트를 보인다.
- */
+let map;
+let markers = [];
 
 const Map = ({ posts, selectedPostIndex, handlePostSelect }) => {
   const ref = useRef(null);
 
-  const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState(null);
-  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [svgMarker] = useState({
+    path:
+      'M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z',
+    fillColor: '#444444',
+    fillOpacity: 0.5,
+    strokeWeight: 0,
+    rotation: 0,
+    scale: 2,
+    anchor: new google.maps.Point(15, 30),
+  });
+
+  const [svgMarker2] = useState({
+    path:
+      'M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z',
+    fillColor: '#901090',
+    fillOpacity: 0.7,
+    strokeWeight: 0,
+    rotation: 0,
+    scale: 2,
+    anchor: new google.maps.Point(15, 30),
+  });
 
   useEffect(() => {
-    const loader = new Loader({
-      apiKey: 'AIzaSyD19HDfecIVKOhxEa0a81aC9AV5_2LrgDY',
-      version: 'weekly',
-      language: 'ko',
-      region: 'KR',
-    });
-
-    loader.load().then(() => {
-      const newMap = new google.maps.Map(ref.current, {
-        zoom: 2,
-        center: {
-          lat: 30.0,
-          lng: 20.0,
-        },
-        disableDefaultUI: true,
-        // zoomControl: true,
-      });
-
-      setMap(newMap);
+    map = new google.maps.Map(ref.current, {
+      zoom: 2,
+      center: {
+        lat: 30.0,
+        lng: 20.0,
+      },
+      disableDefaultUI: true,
+      // zoomControl: true,
     });
   }, []);
 
   useEffect(() => {
-    if (!map) {
-      return;
-    }
+    markers.forEach((marker) => {
+      marker.setMap(null);
+    });
 
-    const newMarkers = [];
-
-    posts.forEach((post, index) => {
+    markers = posts.map((post, index) => {
       const marker = new google.maps.Marker({
-        map: map,
+        map,
         optimized: false,
         position: post.location,
-        animation: google.maps.Animation.DROP,
+        icon: svgMarker,
+        // animation: google.maps.Animation.DROP,
       });
 
       marker.addListener('click', () => {
         handlePostSelect(index);
       });
 
-      newMarkers.push(marker);
+      return marker;
     });
-
-    console.log('초기화');
-    console.log(newMarkers);
-    setMarkers(newMarkers);
-  }, [map]);
+  }, [posts]);
 
   useEffect(() => {
-    if (!map) {
+    if (selectedPostIndex === null) {
       return;
     }
 
     markers.forEach((marker) => {
-      marker.setMap(null);
+      marker.setAnimation(null);
+      marker.setIcon(svgMarker);
     });
 
-    const newMarkers = [];
-
-    posts.forEach((post, index) => {
-      const marker = new google.maps.Marker({
-        map: map,
-        optimized: false,
-        position: post.position,
-        animation: google.maps.Animation.DROP,
-      });
-
-      marker.addListener('click', () => {
-        handleSelectPost(index);
-      });
-
-      newMarkers.push(marker);
-    });
-
-    console.log('최신화');
-    console.log(newMarkers);
-    setMarkers(newMarkers);
-  }, [posts]);
-
-  useEffect(() => {
-    if (!map) {
-      return;
-    }
-
-    console.log(selectedPostIndex);
-
-    if (selectedMarker !== null) {
-      selectedMarker.setAnimation(null);
-    }
-
-    if (selectedPostIndex !== null) {
-      const targetMarker = markers[selectedPostIndex];
-
-      // map.setZoom(4);
-      map.panTo(targetMarker.position);
-      targetMarker.setAnimation(google.maps.Animation.BOUNCE);
-      setSelectedMarker(targetMarker);
-    }
+    const targetMarker = markers[selectedPostIndex];
+    // map.setZoom(4);
+    map.panTo(targetMarker.position);
+    targetMarker.setAnimation(google.maps.Animation.BOUNCE);
+    targetMarker.setIcon(svgMarker2);
   }, [selectedPostIndex]);
 
   return <div style={{ height: '100%' }} ref={ref} />;
 };
 
-export default Map;
+const MapWrapper = (props) => {
+  const [isLoaded] = useContext(ApiLoadContext);
+
+  return isLoaded && <Map {...props} />;
+};
+
+export default MapWrapper;
