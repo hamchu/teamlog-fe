@@ -5,19 +5,23 @@ import { Link } from 'react-router-dom';
 import Map from '../Map';
 
 const PostExplorer = ({ post, handleNextPostSelect, handlePrevPostSelect, handleNullSelect }) => {
-  const [ready, setReady] = useState(false);
-  const [mutable] = useState({ lastTid: null });
+  const [ready, setReady] = useState(true);
+  const [mutable] = useState({ first: true });
 
   useEffect(() => {
+    if (mutable.first) {
+      mutable.first = false;
+      return;
+    }
     setReady(false);
 
     const tid = setTimeout(() => {
-      if (tid === mutable.lastTid) {
-        setReady(true);
-      }
-    }, 400);
+      setReady(true);
+    }, 500);
 
-    mutable.lastTid = tid;
+    return () => {
+      clearTimeout(tid);
+    };
   }, [post]);
 
   return (
@@ -26,7 +30,7 @@ const PostExplorer = ({ post, handleNextPostSelect, handlePrevPostSelect, handle
         handleNullSelect();
       }}
       style={{
-        transition: '0.2s all',
+        transition: '0.5s all',
         opacity: ready ? 1 : 0.2,
         position: 'absolute',
         top: 0,
@@ -73,7 +77,13 @@ const PostExplorer = ({ post, handleNextPostSelect, handlePrevPostSelect, handle
           </Toolbar>
         </AppBar>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ overflow: 'auto', height: '60vh' }}></div>
+          <div style={{ width: '100%', overflow: 'auto', height: '60vh' }}>
+            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
+            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
+            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
+            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
+            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
+          </div>
           <div style={{ display: 'flex', width: '100%', backgroundColor: 'rgba(0,0,0,0.25)' }}>
             <IconButton
               style={{ width: '50%' }}
