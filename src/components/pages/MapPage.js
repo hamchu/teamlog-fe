@@ -2,6 +2,7 @@ import { AppBar, Breadcrumbs, IconButton, Toolbar } from '@material-ui/core';
 import { Close, NavigateBefore, NavigateNext } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Post } from '../../post-management/post';
 import Map from '../Map';
 
 const PostExplorer = ({ post, handleNextPostSelect, handlePrevPostSelect, handleNullSelect }) => {
@@ -60,11 +61,11 @@ const PostExplorer = ({ post, handleNextPostSelect, handlePrevPostSelect, handle
             variant="dense"
           >
             <Breadcrumbs style={{ color: '#FFFFFF' }}>
-              <Link style={{ color: '#FFFFFF' }} href="/">
+              {/* <Link style={{ color: '#FFFFFF' }} href="/">
                 시리즈명
-              </Link>
+              </Link> */}
               <Link style={{ color: '#FFFFFF' }} href="/">
-                프로젝트명
+                {post.project.name}
               </Link>
             </Breadcrumbs>
             <IconButton
@@ -78,11 +79,7 @@ const PostExplorer = ({ post, handleNextPostSelect, handlePrevPostSelect, handle
         </AppBar>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ width: '100%', overflow: 'auto', height: '60vh' }}>
-            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
-            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
-            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
-            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
-            이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />이곳에 post 컴포넌트를<br />
+            <Post maxWidth="md" postContents={post} />
           </div>
           <div style={{ display: 'flex', width: '100%', backgroundColor: 'rgba(0,0,0,0.25)' }}>
             <IconButton
@@ -116,37 +113,22 @@ const MapPage = () => {
   const [selectedPostIndex, setSelectedPostIndex] = useState(null);
 
   useEffect(() => {
-    const postsMock = [
-      {
-        id: 0,
-        contents: 'hello',
-        location: {
-          lat: 10.0,
-          lng: 20.0,
-        },
-        project_id: 0,
-      },
-      {
-        id: 1,
-        contents: 'hi',
-        location: {
-          lat: 30.0,
-          lng: 20.0,
-        },
-        project_id: 1,
-      },
-      {
-        id: 3,
-        contents: 'gogo',
-        location: {
-          lat: -40.0,
-          lng: 100.0,
-        },
-        project_id: 1,
-      },
-    ];
+    (async () => {
+      let result;
+      try {
+        result = await fetch('http://3.15.16.150:8090/api/posts/with-location');
+      } catch {
+        console.error('fetch 실패');
+      }
+      if (result.status !== 200) {
+        // TODO: status에 따른 분기 처리
+        console.error('request 실패');
+      }
 
-    setPosts(postsMock);
+      const fetchedPosts = await result.json();
+      console.log(fetchedPosts);
+      setPosts(fetchedPosts);
+    })();
   }, []);
 
   return (

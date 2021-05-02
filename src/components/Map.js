@@ -1,10 +1,13 @@
 /* eslint-disable no-undef */
 
+import MarkerClusterer from '@googlemaps/markerclustererplus';
 import { useContext, useEffect, useRef, useState } from 'react';
 import ApiLoadContext from '../contexts/apiLoad';
+import './Map.css';
 
 let map;
 let markers = [];
+let markerClusterer;
 
 const Map = ({ posts, selectedPostIndex, handlePostSelect }) => {
   const ref = useRef(null);
@@ -48,20 +51,85 @@ const Map = ({ posts, selectedPostIndex, handlePostSelect }) => {
       marker.setMap(null);
     });
 
+    const bounds = new google.maps.LatLngBounds();
+
     markers = posts.map((post, index) => {
       const marker = new google.maps.Marker({
         map,
         optimized: false,
-        position: post.location,
+        position: {
+          lat: post.latitude,
+          lng: post.longitude,
+        },
         icon: svgMarker,
         // animation: google.maps.Animation.DROP,
       });
+
+      bounds.extend({
+        lat: post.latitude,
+        lng: post.longitude,
+      });
+
+      marker.index = index;
 
       marker.addListener('click', () => {
         handlePostSelect(index);
       });
 
       return marker;
+    });
+
+    map.fitBounds(bounds);
+
+    markerClusterer = new MarkerClusterer(map, markers, {
+      zoomOnClick: false,
+      styles: [
+        {
+          width: 30,
+          height: 30,
+          className: 'custom-clustericon-1',
+        },
+        {
+          width: 40,
+          height: 40,
+          className: 'custom-clustericon-2',
+        },
+        {
+          width: 50,
+          height: 50,
+          className: 'custom-clustericon-3',
+        },
+      ],
+      clusterClass: 'custom-clustericon',
+    });
+
+    markerClusterer.addListener('clusteringbegin', () => {
+      console.log('clustering!!');
+    });
+
+    markerClusterer.addListener('clusteringend', () => {
+      console.log('clustering');
+      markerClusterer.getClusters().forEach((cluster) => {
+        cluster.getMarkers().forEach((marker) => {
+          if (marker.getIcon().fillColor === svgMarker2.fillColor) {
+            const f = () => {
+              setTimeout(() => {
+                if (cluster.clusterIcon_.div_) {
+                  cluster.clusterIcon_.div_.classList.add('custom-clustericon-selected');
+                } else {
+                  f();
+                }
+              });
+            };
+
+            f();
+          }
+        });
+      });
+    });
+
+    google.maps.event.addListener(markerClusterer, 'clusterclick', (cluster) => {
+      handlePostSelect(cluster.getMarkers()[0].index);
     });
   }, [posts]);
 
@@ -76,7 +144,8 @@ const Map = ({ posts, selectedPostIndex, handlePostSelect }) => {
     });
 
     const targetMarker = markers[selectedPostIndex];
-    // map.setZoom(4);
+    // map.setZoom(2);
+
     map.panTo(targetMarker.position);
     targetMarker.setAnimation(google.maps.Animation.BOUNCE);
     targetMarker.setIcon(svgMarker2);

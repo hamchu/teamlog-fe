@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.11.3",
+    "@googlemaps/markerclustererplus": "^1.1.0",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "*",
@@ -12,10 +13,13 @@
     "@testing-library/user-event": "^12.1.10",
     "google-maps-react": "^2.0.6",
     "install": "^0.13.0",
+    "jquery": "^3.6.0",
     "npm": "^7.8.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-google-maps": "^9.4.5",
+    "react-material-ui-carousel": "^2.2.4",
+    "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"
