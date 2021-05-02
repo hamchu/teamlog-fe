@@ -48,7 +48,6 @@ const PostExplorer = ({ post, handleNextPostSelect, handlePrevPostSelect, handle
     >
       <div
         style={{
-          width: '80%',
           backgroundColor: 'rgba(255,255,255,0.5)',
         }}
         onClick={(event) => {
@@ -77,28 +76,30 @@ const PostExplorer = ({ post, handleNextPostSelect, handlePrevPostSelect, handle
             </IconButton>
           </Toolbar>
         </AppBar>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '100%', overflow: 'auto', height: '60vh' }}>
-            <Post maxWidth="md" postContents={post} />
+        <div style={{ width: '100%', overflow: 'auto', height: '60vh' }}>
+          <div style={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
+            <div style={{ backgroundColor: 'white', marginTop: 'auto', marginBottom: 'auto', marginLeft: '24px', marginRight: '24px', padding: '24px' }}>
+                <Post maxWidth="lg" postContents={post} />
+            </div>
           </div>
-          <div style={{ display: 'flex', width: '100%', backgroundColor: 'rgba(0,0,0,0.25)' }}>
-            <IconButton
-              style={{ width: '50%' }}
-              onClick={() => {
-                handlePrevPostSelect();
-              }}
-            >
-              <NavigateBefore style={{ color: '#FFFFFF' }} />
-            </IconButton>
-            <IconButton
-              style={{ width: '50%' }}
-              onClick={() => {
-                handleNextPostSelect();
-              }}
-            >
-              <NavigateNext style={{ color: '#FFFFFF' }} />
-            </IconButton>
-          </div>
+        </div>
+        <div style={{ display: 'flex', width: '100%', backgroundColor: 'rgba(0,0,0,0.25)' }}>
+          <IconButton
+            style={{ width: '50%' }}
+            onClick={() => {
+              handlePrevPostSelect();
+            }}
+          >
+            <NavigateBefore style={{ color: '#FFFFFF' }} />
+          </IconButton>
+          <IconButton
+            style={{ width: '50%' }}
+            onClick={() => {
+              handleNextPostSelect();
+            }}
+          >
+            <NavigateNext style={{ color: '#FFFFFF' }} />
+          </IconButton>
         </div>
       </div>
     </div>

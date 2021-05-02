@@ -109,6 +109,12 @@ const Map = ({ posts, selectedPostIndex, handlePostSelect }) => {
 
     markerClusterer.addListener('clusteringend', () => {
       console.log('clustering');
+
+      markerClusterer.getClusters().forEach((cluster, index) => {
+        console.log(`cluster [${index}]`);
+        console.log(cluster.getMarkers());
+      });
+
       markerClusterer.getClusters().forEach((cluster) => {
         cluster.getMarkers().forEach((marker) => {
           if (marker.getIcon().fillColor === svgMarker2.fillColor) {
