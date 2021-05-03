@@ -1,7 +1,7 @@
 import { useMediaQuery } from 'react-responsive';
-import Carousel from 'react-material-ui-carousel';
-import './carousel-theme.css';
-import './carousel.css';
+// import Carousel from 'react-material-ui-carousel';
+// import './carousel-theme.css';
+// import './carousel.css';
 import RoomIcon from '@material-ui/icons/Room';
 import Grow from '@material-ui/core/Grow';
 import Divider from '@material-ui/core/Divider';
@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import { Carousel } from 'react-responsive-carousel';
 
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -26,6 +27,7 @@ import LikerCounter from './liker';
 import FileList from './fileList';
 import { Media } from './media';
 import { Comment, CommentCounter, CommentForm } from './comment';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 // import dao from '../../src/media/dao.png';
 import ogu from '../media/ogu.PNG';
@@ -222,15 +224,15 @@ const MediaList = ({ media }) => {
     query: '(max-width:767px)',
   });
 
-  let size = isPc ? '60em' : isTablet ? '45em' : '30em';  
+  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
   return (
     <Box id="mediaBox" textAlign="center">
-      <Carousel autoPlay={false} animation="slide" cycleNavigation={false}>
-        {
-          media.map((file) => ( <Box className={classes.media} height={size}>
-            <Media file={file} />
-            </Box>))
-          }
+      <Carousel useKeyboardArrows>
+      {media.map((item, i) => (
+        <Box className={classes.media} height={size}>
+          <Media key={i} file={item} />
+        </Box>
+      ))}
       </Carousel>
     </Box>
   );
