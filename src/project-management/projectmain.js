@@ -83,7 +83,7 @@ const ProjectMain = ({ match }) => {
           console.log('데이터 없음');
           return;
         }
-        console.log(res);
+        // console.log(res);
         setPosts(res);
         setIsPostsLoaded(true);
         if (callback) callback(res); // 포스트 결과를 한 번 더 활용해야하는 경우 매개변수로 전달
