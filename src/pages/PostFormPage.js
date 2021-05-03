@@ -102,6 +102,12 @@ const PostForm = (props) => {
       ]);
       setIsLoaded(true);
     }, 3000);
+
+    return () => {
+      uploadedFiles.forEach((file) => {
+        URL.revokeObjectURL(file.url);
+      })
+    }
   }, []);
 
   return (<Grid className={classes.root} container direction='column' alignItems='center'>
